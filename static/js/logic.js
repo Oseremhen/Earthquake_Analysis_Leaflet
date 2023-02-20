@@ -4,19 +4,17 @@ var queryURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_we
 
 // Perform a GET request to the query URL
 d3.json(queryURL).then(function(data){
-    // Once e get a response, send the data.features and data.features object to the createFeatures function.
     createFeatures(data.features);
   });
     
 
 function createFeatures(earthquakeData, platesData){
 
-    // Give each feature a popup describing the place and time of the earthquakes
     function onEachFeature(feature, layer){
         layer.bindPopup(`<h3>Where: ${feature.properties.place}</h3><hr><p>Time: ${new Date(feature.properties.time)}</p><hr><p>Magnitude: ${feature.properties.mag}</p><hr><p>Number of "Felt" Reports: ${feature.properties.felt}`);
     }
 
-    // Create a GeoJSON layer containing the features array on the earthquakeData object
+    // Create a GeoJSON layer containing the features array on the earthquakeData object for the colors and radius size
     function createCircleMarker(feature, latlng){
       console.log(feature.geometry.coordinates[1]);
        let options = {
@@ -40,7 +38,7 @@ function createFeatures(earthquakeData, platesData){
     createMap(earthquakes);
 }
 
-// Circles color palette based on mag (feature) data marker: data markers should reflect the magnitude of the earthquake by their size and the depth of the earthquake by color. Earthquakes with higher magnitudes should appear larger, and earthquakes with greater depth should appear darker in color.
+// Create an if function for the colors
 function chooseColor(depths){
     
         if (-10 <= depths && depths <= 10)
@@ -58,7 +56,7 @@ function chooseColor(depths){
     
 }
 
-// Create map legend to provide context for map data
+// Create map legend to provide context for map
 let legend = L.control({position: 'bottomright'});
 
 legend.onAdd = function() {
